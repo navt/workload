@@ -19,3 +19,5 @@ define("LANG_WL_QTY_CPU",     "Количество процессоров");
 
 define("LANG_WL_INCL_HINT",   "Используйте, если автоматическое определение не работает");
 define("LANG_WL_CPU_HINT",    "Количество процессоров на вашем сервере");
+
+define("LANG_WL_OPT_RESALT",  "Отчет");

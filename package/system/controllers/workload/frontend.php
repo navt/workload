@@ -150,17 +150,17 @@ class workload extends cmsFrontend {
     public function findVisitorType() {
         // https://snipp.ru/php/is-bot
         $bots = [
-			'YandexBot', 'YandexAccessibilityBot', 'YandexMobileBot','YandexDirectDyn',
-			'YandexScreenshotBot', 'YandexImages', 'YandexVideo', 'YandexVideoParser',
-			'YandexMedia', 'YandexBlogs', 'YandexFavicons', 'YandexWebmaster',
-			'YandexPagechecker', 'YandexImageResizer','YandexAdNet', 'YandexDirect',
-			'YaDirectFetcher', 'YandexCalendar', 'YandexSitelinks', 'YandexMetrika',
-			'YandexNews', 'YandexNewslinks', 'YandexCatalog', 'YandexAntivirus',
-			'YandexMarket', 'YandexVertis', 'YandexForDomain', 'YandexSpravBot',
-			'YandexSearchShop', 'YandexMedianaBot', 'YandexOntoDB', 'YandexOntoDBAPI',
-			'Googlebot', 'Googlebot-Image', 'Mediapartners-Google', 'AdsBot-Google',
-			'Mail.RU_Bot', 'bingbot', 'Accoona', 'ia_archiver', 'Ask Jeeves', 
-			'OmniExplorer_Bot', 'W3C_Validator', 'WebAlta', 'YahooFeedSeeker', 
+            'YandexBot', 'YandexAccessibilityBot', 'YandexMobileBot','YandexDirectDyn',
+            'YandexScreenshotBot', 'YandexImages', 'YandexVideo', 'YandexVideoParser',
+            'YandexMedia', 'YandexBlogs', 'YandexFavicons', 'YandexWebmaster',
+            'YandexPagechecker', 'YandexImageResizer','YandexAdNet', 'YandexDirect',
+            'YaDirectFetcher', 'YandexCalendar', 'YandexSitelinks', 'YandexMetrika',
+            'YandexNews', 'YandexNewslinks', 'YandexCatalog', 'YandexAntivirus',
+            'YandexMarket', 'YandexVertis', 'YandexForDomain', 'YandexSpravBot',
+            'YandexSearchShop', 'YandexMedianaBot', 'YandexOntoDB', 'YandexOntoDBAPI',
+            'Googlebot', 'Googlebot-Image', 'Mediapartners-Google', 'AdsBot-Google',
+            'Mail.RU_Bot', 'bingbot', 'Accoona', 'ia_archiver', 'Ask Jeeves', 
+            'OmniExplorer_Bot', 'W3C_Validator', 'WebAlta', 'YahooFeedSeeker', 
             'Yahoo!', 'Ezooms', '', 'Tourlentabot', 'MJ12bot', 'AhrefsBot', 
             'SearchBot', 'SiteStatus', 'Nigma.ru', 'Baiduspider', 'Statsbot', 
             'SISTRIX', 'AcoonBot', 'findlinks', 'proximic', 'OpenindexSpider',
@@ -187,6 +187,16 @@ class workload extends cmsFrontend {
 
         return "there_is_ua";
     }
+
+    public function actionDisplay() {
+        
+        if (cmsUser::isAdmin() !== "1") {
+            $this->redirect(href_to_home());
+        }
+
+        $data = $this->getData();
+        $this->cms_template->renderPlain("outlook", ["data" => $data]);
+    }
  
 }
 
@@ -200,10 +210,9 @@ class Logger {
 
         if ($this->active === false) return;
 
-        $this->logPath = $logPath; 
-        
-        
+        $this->logPath = $logPath;    
     }
+
     public function log($level, $message, array $context = []) {
         
         if ($this->active === false) return;

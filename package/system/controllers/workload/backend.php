@@ -16,6 +16,10 @@ class backendWorkload extends cmsBackend {
                 'title' => LANG_OPTIONS,
                 'url'   => href_to($this->root_url, 'options')
             ],
+            [
+                'title' => LANG_WL_OPT_RESALT,
+                'url'   => href_to("/workload/display")
+            ],
         ];
     }
 
@@ -27,7 +31,7 @@ class backendWorkload extends cmsBackend {
         if (file_exists($this->cms_config->cache_path."wl.log") === true) {
             unlink($this->cms_config->cache_path."wl.log");
         }
-        
+
         if (file_exists($this->cms_config->cache_path."wl.json") === true) {
             unlink($this->cms_config->cache_path."wl.json");
         }
