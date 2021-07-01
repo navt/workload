@@ -36,7 +36,7 @@ class backendWorkload extends cmsBackend {
             unlink($this->cms_config->cache_path."wl.json");
         }
 
-        cmsUser::addSessionMessage(sprintf(LANG_CP_COMPONENT_IS_DELETED, LANG_WL_CONTROLLER), 'success');
+        cmsUser::addSessionMessage(sprintf(LANG_CP_COMPONENT_IS_DELETED, LANG_WORKLOAD_CONTROLLER), 'success');
         $this->redirectTo('admin', 'controllers');
 
     }

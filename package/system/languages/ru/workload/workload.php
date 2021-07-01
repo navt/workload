@@ -1,5 +1,5 @@
 <?php
-define("LANG_WL_CONTROLLER",  "Рабочая нагрузка на сервер");
+define("LANG_WORKLOAD_CONTROLLER",  "Рабочая нагрузка на сервер");
 define("LANG_WL_TAB_ONE",     "Управление");
 define("LANG_WL_SWITCHED_ON", "Компонент включён");
 define("LANG_WL_LOGGING_ON",  "Логирование включёно");

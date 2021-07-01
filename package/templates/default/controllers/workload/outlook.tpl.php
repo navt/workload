@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo LANG_WL_CONTROLLER; ?> &mdash; <?php $this->sitename(); ?></title>
+<title><?php echo LANG_WORKLOAD_CONTROLLER; ?> &mdash; <?php $this->sitename(); ?></title>
     <style>
         .table{
             border: 1px solid #eee;
