@@ -14,10 +14,18 @@ class workload extends cmsFrontend {
 
     public function __construct() {
         parent::__construct($this->cms_core->request);
+        
+        if (!isset($this->options["workload_on"])) {
+            $this->switchedOn = false;
+        } else {
+            $this->switchedOn = ($this->options["workload_on"] === null) ? false : true;
+        }
 
-        $this->switchedOn = ($this->options["workload_on"] === null) ? false : true;
-        $this->loggingOn = ($this->options["logging_on"] === null) ? false : true;
-
+        if (!isset($this->options["logging_on"])) {
+            $this->loggingOn = false;
+        } else {
+            $this->loggingOn = ($this->options["logging_on"] === null) ? false : true;
+        }
 
         $this->logPath = $this->cms_config->cache_path."wl.log";
         $this->logger = new Logger($this->logPath, $this->loggingOn);
@@ -60,7 +68,6 @@ class workload extends cmsFrontend {
         if (file_exists($this->dataPath) === true) {
             // считываем статистику из файла в массив
             $s = file_get_contents($this->dataPath);
-            // $this->data = json_decode($s, true);
             $data = json_decode($s, true);
             if ($data === null) {
                 $c[] = $s;
