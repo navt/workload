@@ -176,7 +176,7 @@ class workload extends cmsFrontend {
             return sprintf("cms_detect_%s", $dt); // одно из: desctop, mobile, tablet
         }
 
-        return "there_is_ua";  // визитёр с UA
+        return "other";  // визитёр с UA
     }
 
     public function actionDisplay() {
