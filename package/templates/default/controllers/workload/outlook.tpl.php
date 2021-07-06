@@ -39,24 +39,26 @@
     Окончание наблюдний: <?php echo $data["finish_date"]; ?><br>
     Количество процессорв: <?php echo ($data["qty_cpu"] === false) ?
                                 "не определено" : $data["qty_cpu"]; ?><br>
-    Всего визитов: <?php echo $data["total_visits"]; ?><br>
+    Всего запросов: <?php echo $data["total_querys"]; ?><br>
     </div>
     <table class="table">
         <tr>
-            <th>Визитёр</th>
-            <th>Кол-во визитов</th>
-            <th>% от общего кол-ва визитов</th>
+            <th>Тип запроса к серверу</th>
+            <th>Кол-во запросов</th>
+            <th>% от общего кол-ва запросов</th>
             <th>Мах нагрузка процессоров в %</th>
+            <th>Время фиксации mах нагрузки</th>
         </tr>
-        <?php foreach ($data["visits"] as $type => $row): ?>
+        <?php foreach ($data["querys"] as $type => $row): ?>
         <tr>
             <td><?php echo $type; ?></td>
             <td><?php echo $row["qty"]; ?></td>
             <td>
-                <?php echo ($data["total_visits"] == 0) ? 
-                    0 : sprintf("%01.2f", 100*($row["qty"]/$data["total_visits"])); ?>
+                <?php echo ($data["total_querys"] == 0) ? 
+                    0 : sprintf("%01.2f", 100*($row["qty"]/$data["total_querys"])); ?>
             </td>
             <td><?php echo ($row["max_la"] == -1) ? "-" : $row["max_la"]; ?></td>
+            <td><?php echo $row["mft"]; ?></td>
         </tr>
         <?php endforeach ?>
     </table> 

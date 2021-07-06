@@ -3,21 +3,15 @@ class onWorkloadEngineStart extends cmsAction {
 
     public function run() {
         
-        if ($this->checkSwitches() === false) {
-            return;
-        }
+        if ($this->checkSwitches() === false) return;
         
-        if ($this->checkInterval() === false) {
-            return;
-        }
+        if ($this->checkInterval() === false) return;
 
         $data = $this->getData();
 
-        if ($data === false) {
-            return;
-        }
+        if ($data === false) return;
 
-        $data["total_visits"]++;
+        $data["total_querys"]++;
         $qtyCPU = $data["qty_cpu"];
 
         if (is_integer($qtyCPU) === true) {
@@ -29,19 +23,21 @@ class onWorkloadEngineStart extends cmsAction {
         }
 
         $type = $this->findVisitorType();
-        $visits = $data["visits"];
+        $querys = $data["querys"];
 
-        if (array_key_exists($type, $visits) === true) {
+        if (array_key_exists($type, $querys) === true) {
 
-            $data["visits"][$type]["qty"]++;
+            $data["querys"][$type]["qty"]++;
 
-            if ($data["visits"][$type]["max_la"] < $la) {
-                $data["visits"][$type]["max_la"] = $la;
+            if ($data["querys"][$type]["max_la"] < $la) {
+                $data["querys"][$type]["max_la"] = $la;
+                $data["querys"][$type]["mft"] = $this->now->format("Y-m-d H:i:s");
             }
 
         } else {
-            $data["visits"][$type]["qty"] = 1;
-            $data["visits"][$type]["max_la"] = $la;
+            $data["querys"][$type]["qty"] = 1;
+            $data["querys"][$type]["max_la"] = $la;
+            $data["querys"][$type]["mft"] = $this->now->format("Y-m-d H:i:s");
         }
         
         $this->saveData($data);

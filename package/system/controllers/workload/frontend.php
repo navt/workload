@@ -9,6 +9,7 @@ class workload extends cmsFrontend {
     public $dataPath;        // путь к файлу статистики 
     public $logPath;         // путь к файлу лога
     public $logger;          // объект класса Logger
+    public $now;             // объект класса DateTime c текущим временем
 
 
 
@@ -31,6 +32,7 @@ class workload extends cmsFrontend {
         $this->logger = new Logger($this->logPath, $this->loggingOn);
 
         $this->dataPath = $this->cms_config->cache_path."wl.json";
+        $this->now = new DateTime();
     }
 
     public function getQtyCPU() {
@@ -84,10 +86,11 @@ class workload extends cmsFrontend {
                 "start_date" => $this->options["start_date"],
                 "finish_date" => $this->options["finish_date"],
                 "qty_cpu" => $qtyCPU,
-                "total_visits" => 0,
-                "visits" => [
-                    "there_is_ua" => ["qty" => 0, "max_la" => 0],
-                    "without_ua" => ["qty" => 0, "max_la" => 0] 
+                "total_querys" => 0,
+                "querys" => [
+                    // qty - quantity, max_la - max load  average, mft - maximum fixation time
+                    "without_ua" => ["qty" => 0, "max_la" => 0, "mft" => "2000-20-10 00:00:00"],
+                    "other" => ["qty" => 0, "max_la" => 0, "mft" => "2000-20-10 00:00:00"] 
                 ],
             ];
         }
@@ -145,10 +148,8 @@ class workload extends cmsFrontend {
             return false;    
         }
 
-        $now = new DateTime();
-
-        if ($now->format('U') >= $start->format('U') 
-            && $now->format('U') < $finish->format('U')) {
+        if ($this->now->format('U') >= $start->format('U') 
+            && $this->now->format('U') < $finish->format('U')) {
             return true;
         }
 
@@ -160,22 +161,22 @@ class workload extends cmsFrontend {
         $bots = $this->executeAction("get_bots");
 
         if (!isset($_SERVER["HTTP_USER_AGENT"])) {
-            return "without_ua";
+            return "without_ua"; // визитер без UA
         }
 
         $ua = $_SERVER["HTTP_USER_AGENT"];
         foreach ($bots as $type) {
             if (stripos($ua, $type) !== false) {
-                return $type;
+                return $type;   // визитёр - бот
             }
         }
 
         $dt = cmsRequest::getDeviceType();
         if ($dt !== null) {
-            return sprintf("cms_detect_%s", $dt);
+            return sprintf("cms_detect_%s", $dt); // одно из: desctop, mobile, tablet
         }
 
-        return "there_is_ua";
+        return "there_is_ua";  // визитёр с UA
     }
 
     public function actionDisplay() {
