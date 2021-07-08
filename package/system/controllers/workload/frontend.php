@@ -11,7 +11,8 @@ class workload extends cmsFrontend {
     public $logger;          // объект класса Logger
     public $now;             // объект класса DateTime c текущим временем
 
-
+    const WITHOUT_UA = "without_ua";
+    const OTHER      = "other";
 
     public function __construct() {
         parent::__construct($this->cms_core->request);
@@ -72,8 +73,8 @@ class workload extends cmsFrontend {
             $s = file_get_contents($this->dataPath);
             $data = json_decode($s, true);
             if ($data === null) {
-                $c[] = $s;
-                $this->logger->log("error", "json не может быть преобразован.", $c);
+                $c["data_string"] = $s;
+                $this->logger->log("error", "json не может быть преобразован.\n", $c);
                 return false;
             }
 
@@ -89,8 +90,8 @@ class workload extends cmsFrontend {
                 "total_querys" => 0,
                 "querys" => [
                     // qty - quantity, max_la - max load  average, mft - maximum fixation time
-                    "without_ua" => ["qty" => 0, "max_la" => 0, "mft" => "2000-20-10 00:00:00"],
-                    "other" => ["qty" => 0, "max_la" => 0, "mft" => "2000-20-10 00:00:00"] 
+                    self::WITHOUT_UA => ["qty" => 0, "max_la" => 0, "mft" => "2000-20-10 00:00:00"],
+                    self::OTHER      => ["qty" => 0, "max_la" => 0, "mft" => "2000-20-10 00:00:00"] 
                 ],
             ];
         }
@@ -157,11 +158,11 @@ class workload extends cmsFrontend {
     }
 
     public function findVisitorType() {
-        // https://snipp.ru/php/is-bot
+
         $bots = $this->executeAction("get_bots");
 
         if (!isset($_SERVER["HTTP_USER_AGENT"])) {
-            return "without_ua"; // визитер без UA
+            return self::WITHOUT_UA; // визитер без UA
         }
 
         $ua = $_SERVER["HTTP_USER_AGENT"];
@@ -176,7 +177,20 @@ class workload extends cmsFrontend {
             return sprintf("cms_detect_%s", $dt); // одно из: desctop, mobile, tablet
         }
 
-        return "other";  // визитёр с UA
+        return self::OTHER;  // все остальные
+    }
+
+    public function fixingOverload($la) {
+        if ($this->loggingOn === false) return;
+
+        if ($la < $this->options["overload_value"]) return;
+
+        $context["load_average"] = $la;
+        $context["REQUEST_METHOD"] = $_SERVER["REQUEST_METHOD"];
+        $context["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
+        $context["QUERY_STRING"] = $_SERVER["QUERY_STRING"];
+        $context["HTTP_USER_AGENT"] = $_SERVER["HTTP_USER_AGENT"];
+        $this->logger->log("info", "Фиксация факта перегрузки сервера\n", $context);
     }
 
     public function actionDisplay() {

@@ -37,7 +37,7 @@ class formWorkloadOptions extends cmsForm {
                 'type' => 'fieldset',
                 'title' => LANG_WL_TAB_CPU,
                 'childs' => [
-                     new fieldCheckbox('incl_on_hands', [
+                    new fieldCheckbox('incl_on_hands', [
                         'title' => LANG_WL_INCL_ON_HANDS,
                         'default' => null,
                         'hint' => LANG_WL_INCL_HINT
@@ -50,6 +50,20 @@ class formWorkloadOptions extends cmsForm {
                             ['min', 1]
                         ],
                         'hint' => LANG_WL_CPU_HINT
+                    ]),
+                    new fieldCheckbox('overload_fixing_on', [
+                        'title' => LANG_WL_OVERLOAD_FIXING,
+                        'default' => null,
+                        'hint' => LANG_WL_OVERLOAD_FIXING_HINT
+                    ]),
+                    new fieldNumber('overload_value', [
+                        'title' => LANG_WL_OVERLOAD_VALUE,
+                        'default' => 110,
+                        'rules'   => [
+                            ['number'],
+                            ['min', 0]
+                        ],
+                        'hint' => LANG_WL_OVERLOAD_VALUE_HINT
                     ]),
                 ]
             ],

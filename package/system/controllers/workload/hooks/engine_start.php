@@ -39,6 +39,10 @@ class onWorkloadEngineStart extends cmsAction {
             $data["querys"][$type]["max_la"] = $la;
             $data["querys"][$type]["mft"] = $this->now->format("Y-m-d H:i:s");
         }
+
+        if ($this->options["overload_fixing_on"] !== null) {
+            $this->fixingOverload($la);
+        }
         
         $this->saveData($data);
     }
