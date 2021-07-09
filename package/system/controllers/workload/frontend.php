@@ -74,7 +74,7 @@ class workload extends cmsFrontend {
             $data = json_decode($s, true);
             if ($data === null) {
                 $c["data_string"] = $s;
-                $this->logger->log("error", "json не может быть преобразован.", $c);
+                $this->logger->log("error", "json не может быть преобразован.\n", $c);
                 return false;
             }
 
@@ -190,7 +190,7 @@ class workload extends cmsFrontend {
         $context["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
         $context["REQUEST_URI"] = $_SERVER["REQUEST_URI"];
         $context["HTTP_USER_AGENT"] = $_SERVER["HTTP_USER_AGENT"];
-        $this->logger->log("info", "Фиксация факта критичной загрузки системы", $context);
+        $this->logger->log("info", "Фиксация факта критичной загрузки системы\n", $context);
     }
 
     public function actionDisplay() {
@@ -238,7 +238,7 @@ class Logger {
         if ($this->active === false) return;
 
         $date = new DateTime();
-        $out = sprintf("[%s] [%s] %s\n%s\n",
+        $out = sprintf("[%s] [%s] %s%s\n",
             $date->format('Y-m-d H:i:s.v'), 
             ucfirst($level),
             $message,
