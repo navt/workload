@@ -20,6 +20,10 @@ class backendWorkload extends cmsBackend {
                 'title' => LANG_WL_OPT_RESALT,
                 'url'   => href_to("/workload/display")
             ],
+            [
+                'title' => LANG_WL_COMPONENT_LOG,
+                'url'   => href_to("/workload/log")
+            ],
         ];
     }
 

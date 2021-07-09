@@ -74,7 +74,7 @@ class workload extends cmsFrontend {
             $data = json_decode($s, true);
             if ($data === null) {
                 $c["data_string"] = $s;
-                $this->logger->log("error", "json не может быть преобразован.\n", $c);
+                $this->logger->log("error", "json не может быть преобразован.", $c);
                 return false;
             }
 
@@ -188,9 +188,9 @@ class workload extends cmsFrontend {
         $context["load_average"] = $la;
         $context["REQUEST_METHOD"] = $_SERVER["REQUEST_METHOD"];
         $context["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
-        $context["QUERY_STRING"] = $_SERVER["QUERY_STRING"];
+        $context["REQUEST_URI"] = $_SERVER["REQUEST_URI"];
         $context["HTTP_USER_AGENT"] = $_SERVER["HTTP_USER_AGENT"];
-        $this->logger->log("info", "Фиксация факта перегрузки сервера\n", $context);
+        $this->logger->log("info", "Фиксация факта критичной загрузки системы", $context);
     }
 
     public function actionDisplay() {
@@ -201,6 +201,21 @@ class workload extends cmsFrontend {
 
         $data = $this->getData();
         $this->cms_template->renderPlain("outlook", ["data" => $data]);
+    }
+
+    public function actionLog() {
+        
+        if (cmsUser::isAdmin() !== "1") {
+            $this->redirect(href_to_home());
+        }
+
+        if (file_exists($this->logPath) === false) {
+            $out = "Не было записи в файл логов.";
+        } else {
+            $out = file_get_contents($this->logPath);
+        }
+
+        $this->cms_template->renderPlain("log", ["out" => $out]);
     }
  
 }
@@ -223,7 +238,7 @@ class Logger {
         if ($this->active === false) return;
 
         $date = new DateTime();
-        $out = sprintf("[%s] [%s] %s %s\n",
+        $out = sprintf("[%s] [%s] %s\n%s\n",
             $date->format('Y-m-d H:i:s.v'), 
             ucfirst($level),
             $message,
