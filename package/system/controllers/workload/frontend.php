@@ -63,6 +63,13 @@ class workload extends cmsFrontend {
     }
 
     public function loadAverage($qtyCPU = 1, $sensor = 0) {
+        
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $this->logger->log("warning", 
+                "функция PHP sys_getloadavg() не работает в Windows");
+            return -1;  
+        }
+
         $la = sys_getloadavg();
         return round(100*($la[$sensor]/$qtyCPU), 1);
     }
