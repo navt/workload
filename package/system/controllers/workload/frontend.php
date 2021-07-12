@@ -1,5 +1,10 @@
 <?php
- 
+ /**
+ * workload - компонент InstantCMS 2 для мониторинга загрузки системы
+ * @package   workload
+ * @copyright Copyright (c) 2021, Борис Федоров <w-navt@yandex.ru>
+ * @license  /system/controllers/workload/license.txt
+ */
 class workload extends cmsFrontend {
  
     protected $useOptions = true;

@@ -1,5 +1,10 @@
 <?php
- 
+/**
+ * Этот файл часть workload 
+ * @package   workload
+ * @copyright Copyright (c) 2021, Борис Федоров <w-navt@yandex.ru>
+ * @license  /system/controllers/workload/license.txt
+ */ 
 class formWorkloadOptions extends cmsForm {
  
     public $is_tabbed = true;
